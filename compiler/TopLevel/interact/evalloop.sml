@@ -71,6 +71,26 @@ functor EvalLoopF (Compile: TOP_COMPILE) : EVALLOOP =
 	      handle e => (U.topLevelCont := oldcont; raise e)
 	  end
 
+    fun remove (env, s) = let
+          val static = E.staticPart env
+          val symbols = BrowseStatEnv.catalog static
+          val symbols = List.filter (fn s' => not (S.eq (s, s'))) symbols
+          in
+            E.filterEnv (env, symbols)
+          end
+
+
+    fun deport name = let
+          val loc  = EnvRef.loc  ()
+          val base = EnvRef.base ()
+          val symbol = S.varSymbol name
+          val locEnv  = #get loc ()
+          val baseEnv = #get base ()
+          in
+            #set loc (remove (locEnv, symbol));
+            #set base (remove (baseEnv, symbol))
+          end
+
   (* The baseEnv and localEnv are purposely refs so that a top-level command
    * can re-assign either one of them, and the next iteration of the loop
    * will see the new value. It's also important that the toplevelenv

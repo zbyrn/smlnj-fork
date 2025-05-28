@@ -103,7 +103,7 @@ structure VersionTool : sig end = struct
           defaultClassOf,
           sysinfo
         } : Tools.partial_expansion = let
-          fun dogen (targetpp, versionfilepp, releasedatepp) () = let
+          fun dogen (targetpp, versionfilepp, releasedatepp) () : Tools.partial_expansion = let
                 val templatep = Tools.srcpath (#mkpath spec ())
                 val targetp = Tools.srcpath targetpp
                 val target = Tools.nativeSpec targetp
@@ -117,13 +117,13 @@ structure VersionTool : sig end = struct
                           vfile = vfile, rdfile = rdfile
                         }
                       else ()
-                val res = {
+                val res : Tools.expansion = {
                         smlfiles = [
                             (targetp, { share = Sharing.DONTCARE,
                                         setup = (NONE, NONE),
                                         noguid = false,
                                         locl = false,
-                                        controllers = [] })
+                                        controllers = [] } : Tools.smlparams)
                           ],
                         cmfiles = [],
                         sources = [(templatep, { class = class, derived = #derived spec })]

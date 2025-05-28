@@ -75,6 +75,8 @@ functor Interact(EvalLoop : EVALLOOP) : INTERACT =
                 compileError())
 	    end (* use *)
 
+    val deport = EvalLoop.deport
+
   (* compile a file; returns true if okay and false on either compile-time
    * or run-time error
    *)

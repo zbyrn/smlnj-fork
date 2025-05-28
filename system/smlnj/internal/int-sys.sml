@@ -59,6 +59,7 @@ structure InteractiveSystem : sig end =
 
     (* install "use" functionality *)
     val _ = UseHook.useHook := (fn f => ignore(Backend.Interact.use f))
+    val _ = UseHook.deportHook := (fn f => ignore(Backend.Interact.deport f))
 
     (* add cleanup code that resets the internal timers and stats
      * when resuming from exportML... *)

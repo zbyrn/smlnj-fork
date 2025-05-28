@@ -10,6 +10,8 @@ signature EVALLOOP =
 
     val interact    : unit -> unit
     val evalStream  : string * TextIO.instream -> unit
+    (* val import      : string * 'a -> unit *)
+    val deport      : string -> unit
 
   (* to wrap exceptions that are raised during the execution of a top-level transaction *)
     exception ExnDuringExecution of exn

@@ -341,6 +341,7 @@ val print = PrintHook.print
 
 (* simple interface to compiler *)
 val use = UseHook.use
+val deport = UseHook.deport
 
 (* getting info about exceptions *)
 val exnName = ExnInfoHook.exnName

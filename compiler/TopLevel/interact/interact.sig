@@ -19,6 +19,7 @@ signature INTERACT =
    * back.
    *)
     val use : string -> bool
+    val deport : string -> unit
 
   (* compile a file; returns true if okay and false on either compile-time
    * or run-time error.  This version of "use" is used to execute files

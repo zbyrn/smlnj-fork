@@ -11,14 +11,21 @@ structure UseHook : sig
 
     val useHook : hook PrimTypes.ref
 
+    val deportHook : hook PrimTypes.ref
+
     val use : PrimTypes.string -> PrimTypes.unit
+
+    val deport : PrimTypes.string -> PrimTypes.unit
 
   end = struct
 
     type hook = PrimTypes.string -> PrimTypes.unit
 
     val useHook = PrimTypes.ref (fn (_ : PrimTypes.string) => ())
+    val deportHook = PrimTypes.ref (fn (_ : PrimTypes.string) => ())
 
     fun use s = InlineT.! useHook s
+
+    fun deport s = InlineT.! deportHook s
 
   end
