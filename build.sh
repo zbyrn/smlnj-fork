@@ -413,10 +413,10 @@ else
     if [ -f runx.$ARCH-$OPSYS ]; then
       mv runx.$ARCH-$OPSYS "$RUNDIR"
     fi
-    if [ -f run.$ARCH-$OPSYS.so ]; then
+    if [ -f runx.$ARCH-$OPSYS.so ]; then
       mv run.$ARCH-$OPSYS.so "$RUNDIR"
     fi
-    if [ -f run.$ARCH-$OPSYS.a ]; then
+    if [ -f runx.$ARCH-$OPSYS.a ]; then
       mv run.$ARCH-$OPSYS.a "$RUNDIR"
     fi
     make MAKE=make clean
