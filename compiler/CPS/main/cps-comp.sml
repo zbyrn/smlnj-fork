@@ -116,6 +116,10 @@ functor CPSCompFn (MachSpec : MACH_SPEC) : CPS_COMP = struct
 
     fun compile {source, prog} = let
 	  (* convert to CPS *)
+          val () = if !Control.CG.printit then
+            (say "before convert***\n"; PrintFlint.printProg prog; say "\n")
+          else ()
+
 	  val function = check "after convert" (convert prog)
 	  val function = check "after cpstrans" (cpstrans function)
 	  (* optimize CPS *)

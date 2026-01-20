@@ -81,6 +81,8 @@ signature BASICTYPES =
     val contTycon : Types.tycon
     val ccontTycon : Types.tycon
 
+    val contextTycon : Types.tycon
+
     val objectTycon : Types.tycon
     val spin_lockTycon : Types.tycon
 

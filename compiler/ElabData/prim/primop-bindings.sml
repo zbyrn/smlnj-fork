@@ -22,6 +22,7 @@ structure PrimopBindings : sig
   (* built in type constructors *)
     fun contTy t = T.CONty(BT.contTycon,[t])
     fun ccontTy t = T.CONty(BT.ccontTycon,[t])
+    fun contextTy t = T.CONty(BT.contextTycon,[t])
     fun refTy t = T.CONty(BT.refTycon,[t])
     fun arrTy t = T.CONty(BT.arrayTycon,[t])
     fun vecTy t = T.CONty(BT.vectorTycon,[t])
@@ -265,6 +266,9 @@ structure PrimopBindings : sig
 	  ("capture", p1(ar(ar(ccontTy tv1,tv1),tv1)), P.CAPTURE) :-:
 	  ("isolate", p1(ar(ar(tv1,BT.unitTy),contTy tv1)), P.ISOLATE) :-:
 	  ("cthrow", p2(ar(ccontTy tv1,ar(tv1,tv2))), P.THROW) :-:
+	(* delimited continuation operators *)
+	  ("reset", p1(ar(ar(contextTy tv1,tv1),tv1)), P.RESET) :-:
+	  ("shift", p2(ar(tup[contextTy tv1,ar(ar(tv2,tv1),tv1)],tv2)), P.SHIFT) :-:
 	(* reference operations *)
 	  ("!", p1(ar(refTy tv1,tv1)), P.DEREF) :-:
 	  (":=", p1(ar(tup[refTy tv1,tv1],BT.unitTy)), P.ASSIGN) :-:

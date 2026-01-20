@@ -64,6 +64,7 @@ structure PrimEnv : PRIM_ENV =
 	    ("word64", BT.word64Tycon),
 	    ("cont", BT.contTycon),
 	    ("control_cont", BT.ccontTycon),
+	    ("context", BT.contextTycon),
 	    ("array", BT.arrayTycon),
 	    ("vector", BT.vectorTycon),
 	    ("object", BT.objectTycon),

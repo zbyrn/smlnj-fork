@@ -34,6 +34,7 @@ structure PrimTyc :> PRIM_TYC =
       | PT_REF                          (* the polymorphic reference tyc *)
       | PT_CONT                         (* the general-continuation tyc *)
       | PT_CCONT                        (* the control-continuation tyc *)
+      | PT_CONTEXT                      (* the context tyc *)
       | PT_ARROW                        (* the function tyc *)
       | PT_OBJ
       | PT_POINTER			(* raw runtime-system pointer *)
@@ -56,6 +57,7 @@ structure PrimTyc :> PRIM_TYC =
 	    | PT_REF    => "REF"
 	    | PT_CONT   => "CONT"
 	    | PT_CCONT  => "CCONT"
+	    | PT_CONTEXT  => "CONTEXT"
 	    | PT_ARROW  => "FUN"
 	    | PT_OBJ    => "OBJ"
 	    | PT_POINTER   => "C_PTR"
@@ -79,6 +81,7 @@ structure PrimTyc :> PRIM_TYC =
     val ptc_cont   = PT_CONT
     val ptc_ccont  = PT_CCONT
     val ptc_arrow  = PT_ARROW
+    val ptc_context   = PT_CONTEXT
 
     val ptc_obj    = PT_OBJ
     val ptc_pointer = PT_POINTER
@@ -100,6 +103,7 @@ structure PrimTyc :> PRIM_TYC =
 	    | PT_REF =>    1
 	    | PT_CONT =>   1
 	    | PT_CCONT =>  1
+	    | PT_CONTEXT =>   1
 	    | PT_ARROW =>  2
 	    | PT_OBJ =>    0
 	    | PT_POINTER => 0
@@ -132,6 +136,7 @@ structure PrimTyc :> PRIM_TYC =
 	    | PT_SLOCK =>  14
 	    | PT_ETAG =>   15
 	    | PT_VOID =>   16	(* must be = numBaseCode-1 *)
+	    | PT_CONTEXT =>   17
 	    | _ => bug("bogus ptyc: " ^ pt_print ptyc)
 	  (* end case *))
 
@@ -140,7 +145,7 @@ structure PrimTyc :> PRIM_TYC =
       val ptycvec = #[
 	      PT_REAL 32, PT_REAL 64, PT_STRING, PT_EXN, PT_ARRAY, PT_VECTOR, PT_REF,
 	      PT_CONT, PT_CCONT, PT_ARROW, PT_OBJ, PT_POINTER, PT_BARRAY, PT_RARRAY,
-	      PT_SLOCK, PT_ETAG, PT_VOID
+	      PT_SLOCK, PT_ETAG, PT_VOID, PT_CONTEXT
 	    ]
     in
     fun pt_fromint k = if (k < numBaseCode)
@@ -192,6 +197,7 @@ structure PrimTyc :> PRIM_TYC =
 	    (BT.refTycon, PT_REF),
 	    (BT.contTycon, PT_CONT),
 	    (BT.ccontTycon, PT_CCONT),
+	    (BT.contextTycon, PT_CONTEXT),
 	    (BT.arrowTycon, PT_ARROW),
 	    (BT.objectTycon, PT_OBJ),
 	    (BT.pointerTycon, PT_POINTER),

@@ -140,6 +140,8 @@ structure BasicTypes : BASICTYPES =
     val contTycon = mkPrimTyc("cont", 1, T.NO)
     val ccontTycon = mkPrimTyc("control_cont", 1, T.NO)
 
+    val contextTycon = mkPrimTyc("context", 1, T.NO)
+
     val arrayTycon = mkPrimTyc ("array", 1, T.OBJ)
     val vectorTycon = mkPrimTyc ("vector", 1, T.YES)
 

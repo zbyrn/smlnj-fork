@@ -137,6 +137,8 @@ structure PrimopUtil : sig
       | toString P.CAPTURE = "capture"
       | toString P.THROW = "throw"
       | toString P.ISOLATE = "isolate"
+      | toString P.RESET = "reset"
+      | toString P.SHIFT = "shift"
       | toString P.DEREF = "!"
       | toString P.ASSIGN = ":="
       | toString P.UPDATE = "update"

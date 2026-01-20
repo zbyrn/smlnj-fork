@@ -230,7 +230,8 @@ local
 	  (BT.word8arrayTycon,	fn _ => "-"),
 	  (BT.real64arrayTycon,	fn _ => "-"),
 	  (BT.arrowTycon,	fn _ => "fn"),	(* perhaps "<fn>" or "-fn-" instead? *)
-	  (BT.contTycon,	fn _ => "cont") (* perhaps "<cont>" or "-cont-" instead? *)
+	  (BT.contTycon,	fn _ => "cont"), (* perhaps "<cont>" or "-cont-" instead? *)
+	  (BT.contextTycon,	fn _ => "context")
 	]
 in
   fun primToString tyc = List.find (fn (tyc', _) => TU.eqTycon(tyc, tyc')) toStringTbl

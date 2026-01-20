@@ -89,6 +89,7 @@ structure Primop : PRIMOP =
       | GETVAR | SETVAR				(* E: get/set var register *)
       | MAKEREF					(* E: allocate a ref cell *)
       | CALLCC | CAPTURE | THROW		(* E: continuation operations *)
+      | SHIFT  | RESET             		(* E: delimited continuation operations *)
       | ISOLATE					(* E: isolating a function *)
       | DEREF					(* E: dereferencing *)
       | ASSIGN					(* E: assignment *)

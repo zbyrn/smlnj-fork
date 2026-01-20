@@ -424,6 +424,9 @@ in
 	      | P.WORD_TO_PTR => %?54
               | P.HOST_WORD_SIZE => %?55
               | P.HOST_BIG_ENDIAN => %?56
+
+              | P.SHIFT => %?57
+              | P.RESET => %?58
 	      (** WARNING: last value must be < 80!! **)
     end
 
