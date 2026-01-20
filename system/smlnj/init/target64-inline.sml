@@ -41,6 +41,8 @@ structure InlineT =
     val capture		: ('a control_cont -> 'a) -> 'a = InLine.capture
     val escape		: 'a control_cont -> 'a -> 'b = InLine.cthrow
     val isolate         : ('a -> unit) -> 'a cont = InLine.isolate
+    val reset 		: ('a context -> 'a) -> 'a = InLine.reset
+    val shift       : 'a context * (('b -> 'a) -> 'a) -> 'b = InLine.shift
     val !	 	: 'a ref -> 'a = InLine.!
     val op := 		: 'a ref * 'a -> unit = InLine.:=
     val makeref 	: 'a -> 'a ref = InLine.makeref

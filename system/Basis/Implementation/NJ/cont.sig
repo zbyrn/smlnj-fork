@@ -22,6 +22,10 @@ signature CONT =
     val capture : ('a control_cont -> 'a) -> 'a
     val escape : 'a control_cont -> 'a -> 'b
 
+    type 'a context
+    val reset : ('a context -> 'a) -> 'a
+    val shift : 'a context * (('b -> 'a) -> 'a) -> 'b
+
   end;
 
 

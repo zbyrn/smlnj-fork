@@ -23,6 +23,10 @@ structure Cont : CONT =
     val capture = InlineT.capture
     val escape = InlineT.escape
 
+    type 'a context = 'a PrimTypes.context
+    val reset = InlineT.reset
+    val shift = InlineT.shift
+
   end;
 
 
