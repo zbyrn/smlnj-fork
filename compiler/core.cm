@@ -208,6 +208,7 @@ FLINT/opt/fcontract.sml
 FLINT/opt/optutils.sml
 FLINT/opt/lcontract.sml
 FLINT/opt/recover.sml
+FLINT/opt/wrapunwrap.sml
 FLINT/opt/specialize.sml
 FLINT/opt/loopify.sml
 FLINT/opt/lift.sml
