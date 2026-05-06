@@ -1,0 +1,90 @@
+• Yes, largely representation/calling-convention driven.
+
+  pair vs fpair are treated differently because float pairs are carried as unboxed 64-bit data (RK_RAW64BLOCK) in later CPS/CFG, while ordinary pairs are normal boxed-ish tuple paths.
+
+  Where that decision is made:
+
+  1. Runtime type classification into pair/fpair
+
+  - compiler/FLINT/reps/rttype.sml:311
+  - TC_TUPLE [t1,t2] becomes tcode_fpair if both float-like, else tcode_pair.
+  - Codes defined at compiler/FLINT/reps/rttype.sml:202.
+
+  2. Arrow coercion dispatch on those codes
+
+  - compiler/FLINT/reps/typeoper.sml:341
+  - In tcCoerce, arrow case does isPair; when MAYBE, it emits runtime tests against tcode_pair/tcode_fpair and generates 3 adapters (pair, fpair, fallback cast): compiler/FLINT/reps/typeoper.sml:348, compiler/
+    FLINT/reps/typeoper.sml:395, compiler/FLINT/reps/typeoper.sml:428.
+
+  3. Backend has distinct raw-float record path
+
+  - RK_RAW64BLOCK kind: compiler/CPS/cps/cps.sml:17
+  - Construction/lowering uses that path: compiler/CPS/convert/convert.sml:93, compiler/CPS/convert/cpstrans.sml:115, compiler/CodeGen/cps-to-cfg/cps-to-cfg-fn.sml:213.
+
+  If you don’t want this specialization:
+
+  - There is no single existing runtime flag that disables pair/fpair specialization in reify.
+  - Control.FLINT.sharewrap (compiler/FLINT/main/control.sml:113) only shares wrappers; it does not turn off pair/fpair logic.
+  - Practical options:
+
+  1. Preferred: keep specialization, but reduce blow-up by lifting/memoizing coercion wrappers (the comment already points here in typeoper.sml).
+  2. Hard disable (experimental): patch tcCoerce arrow MAYBE case to always use fallback hh3 (or return NONE), and/or stop producing tcode_fpair in rtLexp. This can break correctness unless you also ensure no
+     code expects specialized pair/fpair calling paths.
+
+  If you want, I can draft a minimal “disable fpair only” patch first (lower risk than disabling both pair+fpair) so you can measure behavior.
+
+
+  rt = v170                    // runtime type code for 'a
+  I2 = I[(a->a)->(a->a)]       // v206/v228 path
+  I1 = I[a->a]                 // v208 path
+  I0 = I[a]                    // v174 path
+
+  // shared coercion helpers (generated once, then called)
+  // each does: if rt==pair then ... else if rt==fpair then ... else cast
+  coerce_A(rt, f)   // v302 / v245 shape return 2-arg function, from f which is one arg
+  coerce_B(rt, f)   // v334 / v260 shape return 1-arg function, from f which is two arg
+
+  mid(g) =                      // v187
+    g1 = coerce_A(rt, g)
+    g2 = coerce_B(rt, g1)
+    y  = I1(g2)
+    y1 = coerce_A(rt, y)
+    y2 = coerce_B(rt, y1)
+    return y2
+
+  f(x) =                        // v163
+    h  = I2(mid)
+    a0 = coerce_A(rt, I0)
+    y  = h(a0)
+    z  = coerce_B(rt, y)
+    return z(x)
+
+v162{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v161{1,0} : ???],
+    v160{3,3} = SELECT(v161, 0) (I: ∀T. T -> T)
+    v154{1,0} = 
+      TFN([v170:M],
+        [v206{1,1}] = TAPP(v160,[AR[f]([TC_WRAP(AR[f]([NTV(v170)], [NTV(v170)]))], [TC_WRAP(AR[f]([NTV(v170)], [NTV(v170)]))])]) Iff: (('a -> 'a) -> ('a -> 'a)) -> (('a -> 'a) -> ('a -> 'a))
+        [v208{1,1}] = TAPP(v160,[TC_WRAP(AR[f]([NTV(v170)], [NTV(v170)]))])                                                      If: ('a -> 'a) -> ('a -> 'a)
+        [v174{1,0}] = TAPP(v160,[NTV(v170)])                                                                                     I:  'a -> 'a
+        FIX(v163{1,0} : FD[FUN(f), SAF, false, NR] = 
+              FN([v158{1,0} : TYC(NTV(v170))],
+                FIX(v187{1,0} : FD[FUN(f), SAF, false, NR] = 
+                      FN([v188{1,0} : TYC(TC_WRAP(AR[f]([NTV(v170)], [NTV(v170)])))],                                            v188: Wrap[ 'a -> 'a ]
+                        v221{1,0} = PRIMOP(unwrap, TYC(AR[f]([TC_WRAP(AR[f]([NTV(v170)], [NTV(v170)]))], [AR[f]([NTV(v170)], [NTV(v170)])])), []) [v188]
+                                                                                                                                 v221: ('a -> 'a) -> ('a -> 'a) from v188 
+                        v223{1,0} = WRAP(AR[f]([NTV(v170)], [NTV(v170)]), v221)
+                        [v214{1,0}] = APP(v208,[v223])
+                        v181{1,0} = PRIMOP(unwrap, TYC(AR[f]([TC_WRAP(AR[f]([NTV(v170)], [NTV(v170)]))], [AR[f]([NTV(v170)], [NTV(v170)])])), []) [v214]
+                        v184{1,0} = WRAP(AR[f]([NTV(v170)], [NTV(v170)]), v181)
+                        RETURN [v184]))
+                                                                                                                                v187: Wrap[ 'a -> 'a ] -> Wrap[ 'a -> 'a ]
+                [v203{1,1}] = APP(v206,[v187])
+                v217{1,0} = WRAP(AR[f]([NTV(v170)], [NTV(v170)]), v174)
+                [v196{1,0}] = APP(v203,[v217])
+                v219{1,1} = PRIMOP(unwrap, TYC(AR[f]([TC_WRAP(AR[f]([NTV(v170)], [NTV(v170)]))], [AR[f]([NTV(v170)], [NTV(v170)])])), []) [v196]
+                APP(v219,[v158])))
+        RETURN [v163])
+    v169{1,0} = STRUCT [v154]
+    RETURN [v169])
+

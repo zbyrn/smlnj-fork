@@ -1,0 +1,438 @@
+Standard ML of New Jersey [Version 2026.1; 64-bit; March 14, 2026]
+- [autoloading]
+[library $smlnj/compiler/current.cm is stable]
+[library $smlnj/compiler/arm64.cm is stable]
+[library $smlnj/viscomp/core.cm is stable]
+[library $smlnj/viscomp/basics.cm is stable]
+[library $smlnj/viscomp/elabdata.cm is stable]
+[library $smlnj/viscomp/elaborate.cm is stable]
+[library $compiler/(core.cm):Library/const-arith/sources.cm is stable]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[library $SMLNJ-BASIS/(basis.cm):basis-common.cm is stable]
+[library $smlnj/smlnj-lib/controls-lib.cm is stable]
+[library $SMLNJ-LIB/Controls/controls-lib.cm is stable]
+[library $smlnj-lib.cm(=$SMLNJ-LIB/Util)/smlnj-lib.cm is stable]
+[autoloading done]
+### ste1 successful
+### e0 successful
+### e1 successful
+val it = () : unit
+### oneUnit
+<<< oneUnit [compiling "stdIn"]
+### parsing successful
+### elaborate successful
+### instrument successful
+
+
+[After Translate ...]
+
+FN(v94: STR([]),
+   v88 = TFN((M) FN(v92: TYC(DTV(1,0)),
+            v91 = FN(v89: TYC(DTV(1,0)),v89)
+              APP(v91, v92)))
+     SRCD(v88))
+
+
+[After FlintNM.norm ...]
+
+v95{?} : FD[FCT, SAF, false, NR] = 
+  FN([v94{?} : ???],
+    v88{?} = 
+      TFN([v98:M],
+        FIX(v96{?} : FD[FUN(cc), SAF, false, NR] = 
+              FN([v92{?} : TYC(DTV(1,0))],
+                FIX(v91{?} : FD[FUN(cc), SAF, false, NR] = 
+                      FN([v89{?} : TYC(DTV(1,0))],
+                        RETURN [v89]))
+                APP(v91,[v92])))
+        RETURN [v96])
+    v97{?} = STRUCT [v88]
+    RETURN [v97])
+### translate successful
+Phase deb2names...
+[After deb2names ...]
+
+v95{?} : FD[FCT, SAF, false, NR] = 
+  FN([v94{?} : ???],
+    v88{?} = 
+      TFN([v98:M],
+        FIX(v96{?} : FD[FUN(cc), SAF, false, NR] = 
+              FN([v92{?} : LT_ENV(ol=1, nl=1, TYC(DTV(1,0)), [B0([NTV(v98)]: [M])])],
+                FIX(v91{?} : FD[FUN(cc), SAF, false, NR] = 
+                      FN([v89{?} : LT_ENV(ol=1, nl=1, TYC(DTV(1,0)), [B0([NTV(v98)]: [M])])],
+                        RETURN [v89]))
+                APP(v91,[v92])))
+        RETURN [v96])
+    v97{?} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...deb2names Done.
+Phase lcontract...
+[After lcontract ...]
+
+v95{?} : FD[FCT, SAF, false, NR] = 
+  FN([v94{?} : ???],
+    v88{?} = 
+      TFN([v98:M],
+        FIX(v96{?} : FD[FUN(cc), SAF, false, NR] = 
+              FN([v92{?} : TYC(NTV(v98))],
+                RETURN [v92]))
+        RETURN [v96])
+    v97{?} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...lcontract Done.
+Phase fixfix...
+[After fixfix ...]
+
+v95{?} : FD[FCT, SAF, false, NR] = 
+  FN([v94{?} : ???],
+    v88{?} = 
+      TFN([v98:M],
+        FIX(v96{?} : FD[FUN(cc), MAY(~17,[0]), false, NR] = 
+              FN([v92{?} : TYC(NTV(v98))],
+                RETURN [v92]))
+        RETURN [v96])
+    v97{?} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...fixfix Done.
+Phase fcontract...
+[After fcontract ...]
+
+v95{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v94{0,0} : ???],
+    v88{1,0} = 
+      TFN([v98:M],
+        FIX(v96{1,0} : FD[FUN(cc), MAY(~17,[0]), false, NR] = 
+              FN([v92{1,0} : TYC(NTV(v98))],
+                RETURN [v92]))
+        RETURN [v96])
+    v97{1,0} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...fcontract Done.
+Phase specialize...
+[After specialize ...]
+
+v95{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v94{0,0} : ???],
+    v88{1,0} = 
+      TFN([v98:M],
+        FIX(v96{1,0} : FD[FUN(cc), MAY(~17,[0]), false, NR] = 
+              FN([v92{1,0} : TYC(NTV(v98))],
+                RETURN [v92]))
+        RETURN [v96])
+    v97{1,0} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...specialize Done.
+Phase loopify...
+[After loopify ...]
+
+v95{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v94{0,0} : ???],
+    v88{1,0} = 
+      TFN([v98:M],
+        FIX(v96{1,0} : FD[FUN(cc), MAY(~17,[0]), false, NR] = 
+              FN([v92{1,0} : TYC(NTV(v98))],
+                RETURN [v92]))
+        RETURN [v96])
+    v97{1,0} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...loopify Done.
+Phase fixfix...
+[After fixfix ...]
+
+v95{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v94{0,0} : ???],
+    v88{1,0} = 
+      TFN([v98:M],
+        FIX(v96{1,0} : FD[FUN(cc), MAY(~17,[0]), false, NR] = 
+              FN([v92{1,0} : TYC(NTV(v98))],
+                RETURN [v92]))
+        RETURN [v96])
+    v97{1,0} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...fixfix Done.
+Phase fcontract...
+[After fcontract ...]
+
+v95{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v94{0,0} : ???],
+    v88{1,0} = 
+      TFN([v98:M],
+        FIX(v96{1,0} : FD[FUN(cc), MAY(~17,[0]), false, NR] = 
+              FN([v92{1,0} : TYC(NTV(v98))],
+                RETURN [v92]))
+        RETURN [v96])
+    v97{1,0} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...fcontract Done.
+Phase wrap...
+[After wrap ...]
+
+v95{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v94{0,0} : ???],
+    v88{1,0} = 
+      TFN([v98:M],
+        FIX(v96{1,0} : FD[FUN(f), MAY(~17,[0]), false, NR] = 
+              FN([v92{1,0} : TYC(NTV(v98))],
+                RETURN [v92]))
+        RETURN [v96])
+    v97{1,0} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...wrap Done.
+Phase fcontract...
+[After fcontract ...]
+
+v95{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v94{0,0} : ???],
+    v88{1,0} = 
+      TFN([v98:M],
+        FIX(v96{1,0} : FD[FUN(f), MAY(~17,[0]), false, NR] = 
+              FN([v92{1,0} : TYC(NTV(v98))],
+                RETURN [v92]))
+        RETURN [v96])
+    v97{1,0} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...fcontract Done.
+Phase wrapunwrap...
+[After wrapunwrap ...]
+
+v95{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v94{0,0} : ???],
+    v88{1,0} = 
+      TFN([v98:M],
+        FIX(v96{1,0} : FD[FUN(f), MAY(~17,[0]), false, NR] = 
+              FN([v92{1,0} : TYC(NTV(v98))],
+                RETURN [v92]))
+        RETURN [v96])
+    v97{1,0} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...wrapunwrap Done.
+Phase fcontract...
+[After fcontract ...]
+
+v95{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v94{0,0} : ???],
+    v88{1,0} = 
+      TFN([v98:M],
+        FIX(v96{1,0} : FD[FUN(f), MAY(~17,[0]), false, NR] = 
+              FN([v92{1,0} : TYC(NTV(v98))],
+                RETURN [v92]))
+        RETURN [v96])
+    v97{1,0} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...fcontract Done.
+Phase reify...
+[After reify ...]
+
+v95{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v94{0,0} : ???],
+    FIX(v88{1,0} : FD[FCT, SAF, false, NR] = 
+          FN([v101{?} : ???],
+            v98{?} = SELECT(v101, 0)
+            FIX(v96{1,0} : FD[FUN(f), MAY(~17,[0]), false, NR] = 
+                  FN([v92{1,0} : TYC(PRIM(VOID))],
+                    RETURN [v92]))
+            RETURN [v96]))
+    v97{1,0} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...reify Done.
+Phase fcontract...
+[After fcontract ...]
+
+v95{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v94{0,0} : ???],
+    FIX(v88{1,0} : FD[FCT, SAF, false, NR] = 
+          FN([v101{0,0} : ???],
+            FIX(v96{1,0} : FD[FUN(f), MAY(~17,[0]), false, NR] = 
+                  FN([v92{1,0} : TYC(PRIM(VOID))],
+                    RETURN [v92]))
+            RETURN [v96]))
+    v97{1,0} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...fcontract Done.
+Phase fixfix...
+[After fixfix ...]
+
+v95{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v94{0,0} : ???],
+    FIX(v88{1,0} : FD[FCT, MAY(~17,[0]), false, NR] = 
+          FN([v101{0,0} : ???],
+            FIX(v96{1,0} : FD[FUN(f), MAY(~17,[0]), false, NR] = 
+                  FN([v92{1,0} : TYC(PRIM(VOID))],
+                    RETURN [v92]))
+            RETURN [v96]))
+    v97{1,0} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...fixfix Done.
+Phase fcontract+eta...
+[After fcontract+eta ...]
+
+v95{1,0} : FD[FCT, SAF, false, NR] = 
+  FN([v94{0,0} : ???],
+    FIX(v88{1,0} : FD[FCT, MAY(~17,[0]), false, NR] = 
+          FN([v101{0,0} : ???],
+            FIX(v96{1,0} : FD[FUN(f), MAY(~17,[0]), false, NR] = 
+                  FN([v92{1,0} : TYC(PRIM(VOID))],
+                    RETURN [v92]))
+            RETURN [v96]))
+    v97{1,0} = STRUCT [v88]
+    RETURN [v97])
+
+Check Pass
+...fcontract+eta Done.
+
+[after convert ...]
+
+std v95(v105[C<[PR1]>],v94[PR0]) =
+   v108(v109[PV]) =
+      v108("bogus")
+   v104(v110[PV]) =
+      v108("bogus")
+   v88(v106[C<[FN]>],v101[PR1]) =
+      v96(v107[C<[PV]>],v92[PV]) =
+         v107(v92)
+      v106(v96)
+   {v88} -> v97
+   v105(v97)
+
+
+[after cpstrans ...]
+
+std v95(v105[C<[PR1]>],v94[PR0]) =
+   v108(v109[PV]) =
+      v108("bogus")
+   v104(v110[PV]) =
+      v108("bogus")
+   v88(v106[C<[FN]>],v101[PR1]) =
+      v96(v107[C<[PV]>],v92[PV]) =
+         v107(v92)
+      v106(v96)
+   {v88} -> v97
+   v105(v97)
+
+
+
+[Before lowering]
+
+std v95(v105[C<[PR1]>],v94[PR0]) =
+   v88(v106[C<[FN]>],v101[PR1]) =
+      v96(v107[C<[PV]>],v92[PV]) =
+         v107(v92)
+      v106(v96)
+   {v88} -> v97
+   v105(v97)
+
+[after cpsopt-code ...]
+
+std v95(v105[C<[PR1]>],v94[PR0]) =
+   v88(v106[C<[FN]>],v101[PR1]) =
+      v96(v107[C<[PV]>],v92[PV]) =
+         v107(v92)
+      v106(v96)
+   {v88} -> v97
+   v105(v97)
+
+
+[after lit-split ...]
+
+std v95(v105[C<[PR1]>],v94[PR1]) =
+   v88(v106[C<[FN]>],v101[PR1]) =
+      v96(v107[C<[PV]>],v92[PV]) =
+         v107(v92)
+      v106(v96)
+   {v88} -> v97
+   v105(v97)
+
+
+[after closure ...]
+
+std v130(v131[PV],v95[PV],v112[C<>],v113[PV],v114[PV],v115[PV],v94[PR1]) =
+   v116(v138[PV],v137[PV],v136[C<>],v135[PV],v134[PV],v133[PV],v132[PR1]) =
+      v123(v145[PV],v144[PV],v143[C<>],v142[PV],v141[PV],v140[PV],v139[PV]) =
+         v143(v143,v142,v141,v140,v139)
+      {RK_ESCAPE 1,(L)v123} -> v146
+      v136(v136,v135,v134,v133,v146)
+   {RK_ESCAPE 1,(L)v116} -> v147
+   {v147} -> v148
+   v112(v112,v113,v114,v115,v148)
+
+
+[after globalfix ...]
+
+std v130(v131[PV],v95[PV],v112[C<>],v113[PV],v114[PV],v115[PV],v94[PR1]) =
+   {RK_ESCAPE 1,(L)v116} -> v147
+   {v147} -> v148
+   v112(v112,v113,v114,v115,v148)
+std v116(v138[PV],v137[PV],v136[C<>],v135[PV],v134[PV],v133[PV],v132[PR1]) =
+   {RK_ESCAPE 1,(L)v123} -> v146
+   v136(v136,v135,v134,v133,v146)
+std v123(v145[PV],v144[PV],v143[C<>],v142[PV],v141[PV],v140[PV],v139[PV]) =
+   v143(v143,v142,v141,v140,v139)
+
+
+[after spill ...]
+
+std v130(v131[PV],v95[PV],v112[C<>],v113[PV],v114[PV],v115[PV],v94[PR1]) =
+   {RK_ESCAPE 1,(L)v116} -> v147
+   {v147} -> v148
+   v112(v112,v113,v114,v115,v148)
+std v116(v138[PV],v137[PV],v136[C<>],v135[PV],v134[PV],v133[PV],v132[PR1]) =
+   {RK_ESCAPE 1,(L)v123} -> v146
+   v136(v136,v135,v134,v133,v146)
+std v123(v145[PV],v144[PV],v143[C<>],v142[PV],v141[PV],v140[PV],v139[PV]) =
+   v143(v143,v142,v141,v140,v139)
+
+Starting feedback...Finished
+v130    E  5
+v116    E  3
+v123    E  1
+### codegen successful
+### C.compile successful
+### mkExec successful
+### ste1 successful
+### e0 successful
+### e1 successful
+val I = fn : 'a -> 'a
+### oneUnit
+<<< oneUnit [compiling "stdIn"]
+= ### parsing successful
+stdIn:20.19-20.21 Error: unbound variable or constructor: If
+stdIn:20.5-20.21 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+stdIn:24.5-24.26 Error: operator is not a function [tycon mismatch]
+  operator: ?.X1
+  in expression: f (1.0,2.0,3.0)
+stdIn:24.5-24.26 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+<<< Error stop after elaborate
+<<< oneUnit [compiling "stdIn"]
+- 
