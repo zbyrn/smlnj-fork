@@ -79,6 +79,7 @@ end = struct
     val wrap       = phase "FLINT 054 wrap" Wrapping.wrapping
     val reify      = phase "FLINT 055 reify" Reify.reify
     val recover    = phase "FLINT 05a recover" Recover.recover
+    val wrapunwrap = phase "FLINT 05555 unwrapunwrap" WrapUnwrapCancel.cancel
 
     (* printProg : string * F.prog -> F.prog *)
     (** pretty printing FLINT code *)
@@ -128,7 +129,7 @@ end = struct
 	      if ChkFlint.checkTop (prog, reified)
 	      then (dumpProg (baseName ^ "." ^ phase, prog);
 		    bug ("FLINT typing errors " ^ phase))
-	      else ()
+	      else (print "Check Pass\n")
 
 	  fun wff (f, s) =
 	      if wformed f
@@ -171,6 +172,8 @@ end = struct
 		      end
 		  | ("reify", FK_WRAP) =>
 		      (reify f, FK_REIFY, phase)
+		  | ("wrapunwrap", FK_WRAP) =>
+		      (wrapunwrap f, FK_WRAP, phase)
 		  | ("deb2names", FK_DEBRUIJN) =>
 		      (deb2names f, FK_NAMED, phase)
 		  | ("names2deb", FK_NAMED) =>

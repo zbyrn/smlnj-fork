@@ -379,7 +379,7 @@ and isFloat (kenv, tc) =
 	   | (LT.TC_FIX _) => NO
 	   | (LT.TC_APP(tx, _)) =>
 		(case LK.tc_whnm_out tx
-		  of (LT.TC_APP _ | LT.TC_PROJ _ | LT.TC_VAR _) =>
+		  of (LT.TC_APP _ | LT.TC_PROJ _ | LT.TC_VAR _ | LT.TC_NVAR _) =>
 		       MAYBE(rtLexp kenv x)
 		   | _ => NO)
 	   | (LT.TC_VAR(i,j)) =>

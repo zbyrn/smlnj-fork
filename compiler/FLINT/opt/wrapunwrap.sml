@@ -103,14 +103,12 @@ fun cancel (prog: F.prog) =
                of (PO.WRAP, F.PRIMOP(po2 as (_, p2, _, _), [F.VAR w], v2, e2)) =>
                     if (w = v1) andalso (p2 = PO.UNWRAP) andalso
                        tysEq(FU.getWrapTyc po1, FU.getUnWrapTyc po2)
-                    then F.PRIMOP(po1, [sv(m, u1)], v1,
-                                  loop(bind(kill(m, [v2]), v2, sv(m, u1)), e2))
+                    then loop(bind(kill(m, [v2]), v2, sv(m, u1)), e2)
                     else F.PRIMOP(po1, [sv(m, u1)], v1, loop(kill(m, [v1]), e1))
                 | (PO.UNWRAP, F.PRIMOP(po2 as (_, p2, _, _), [F.VAR w], v2, e2)) =>
                     if (w = v1) andalso (p2 = PO.WRAP) andalso
                        tysEq(FU.getUnWrapTyc po1, FU.getWrapTyc po2)
-                    then F.PRIMOP(po1, [sv(m, u1)], v1,
-                                  loop(bind(kill(m, [v2]), v2, sv(m, u1)), e2))
+                    then loop(bind(kill(m, [v2]), v2, sv(m, u1)), e2)
                     else F.PRIMOP(po1, [sv(m, u1)], v1, loop(kill(m, [v1]), e1))
                 | _ => F.PRIMOP(po1, [sv(m, u1)], v1, loop(kill(m, [v1]), e1)))
 

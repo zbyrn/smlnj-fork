@@ -55,7 +55,7 @@ type kenv = RT.kenv
 
 datatype outcome = datatype RuntimeType.outcome
 
-val fkfun = {isrec=NONE, known=false, inline=FR.IH_ALWAYS, cconv=FR.CC_FUN LD.ffc_fixed}
+val fkfun = {isrec=NONE, known=false, inline=FR.IH_SAFE, cconv=FR.CC_FUN LD.ffc_fixed}
 
 fun mkarw(ts1, ts2) = LK.tcc_arrow(LD.ffc_fixed, ts1, ts2)
 
@@ -372,106 +372,111 @@ fun tcCoerce (kenv, tc, nt, wflag, b) =
      | (LT.TC_ARROW _, _) => (* (tc1, tc2) => *)
         let val (tc1, _) = LD.tcd_parrow tc
             val (_, tc2) = LD.tcd_parrow nt
-         in (case isPair(kenv, tc1)
-              of (YES | NO) => NONE
-               | (MAYBE e) =>
-                 let val w = mkv()
-                     val test1 = ieqLexp(RET[(VAR w)], tcode_pair)
-                     val test2 = ieqLexp(RET[(VAR w)], tcode_fpair)
-                     val m = mkv() and m2 = mkv()
-                     val n = mkv() and n2 = mkv()
+            (* val _ = ( *)
+            (*   say ("tc1 is "); say (LB.tc_print tc1); say "\n"; *)
+            (*   say ("tc2 is "); say (LB.tc_print tc1); say "\n" *)
+            (* ) *)
+         in NONE
+            (*(case isPair(kenv, tc1) *)
+            (*  of (YES | NO) => NONE *)
+            (*   | (MAYBE e) => *)
+            (*     let val w = mkv() *)
+            (*         val test1 = ieqLexp(RET[(VAR w)], tcode_pair) *)
+            (*         val test2 = ieqLexp(RET[(VAR w)], tcode_fpair) *)
+            (*         val m = mkv() and m2 = mkv() *)
+            (*         val n = mkv() and n2 = mkv() *)
 
-                     val tc_real = LB.tcc_real
-                     val tc_breal = LB.tcc_void (* LT.tcc_wrap tc_real *)
-                     val lt_breal = LD.ltc_tyc tc_breal
-                     val tc_void = LB.tcc_void
-                     val lt_void = LB.ltc_void
-                     val tc_pair = LD.tcc_tuple [tc_void, tc_void]
-                     val tc_fpair = LD.tcc_tuple [tc_real, tc_real]
-                     val tc_bfpair = LD.tcc_tuple [tc_breal, tc_breal]
-                     val lt_pair = LD.ltc_tyc tc_pair
-                     val lt_fpair = LD.ltc_tyc tc_fpair
-                     val lt_bfpair = LD.ltc_tyc tc_bfpair
-                     val ident = fn le => le
+            (*         val tc_real = LB.tcc_real *)
+            (*         val tc_breal = LB.tcc_void (1* LT.tcc_wrap tc_real *1) *)
+            (*         val lt_breal = LD.ltc_tyc tc_breal *)
+            (*         val tc_void = LB.tcc_void *)
+            (*         val lt_void = LB.ltc_void *)
+            (*         val tc_pair = LD.tcc_tuple [tc_void, tc_void] *)
+            (*         val tc_fpair = LD.tcc_tuple [tc_real, tc_real] *)
+            (*         val tc_bfpair = LD.tcc_tuple [tc_breal, tc_breal] *)
+            (*         val lt_pair = LD.ltc_tyc tc_pair *)
+            (*         val lt_fpair = LD.ltc_tyc tc_fpair *)
+            (*         val lt_bfpair = LD.ltc_tyc tc_bfpair *)
+            (*         val ident = fn le => le *)
 
-                     val (argt1, body1, hh1) =
-                       if wflag then (* wrapping *)
-                         ([(m,lt_void),(m2,lt_void)],
-                          fn sv =>
-                            let val xx = mkv() and yy = mkv()
-                             in RECORD(FU_rk_tuple, [VAR m, VAR m2], xx,
-                                  FU_WRAP(tc_pair, [VAR xx], yy,
-                                    APP(sv, [VAR yy])))
-                            end,
-                          fn le =>
-                            WRAPcast(mkarw([tc_void,tc_void],[tc2]),
-                                     true, le))
-                       else (* unwrapping *)
-                         let val x = mkv() and y = mkv() and z = mkv()
-                          in ([(m, lt_void)],
-                              fn sv =>
-                                let val xx = mkv()
-                                 in LET([xx],
-                                      UNWRAPcast(
-                                         mkarw([tc_void, tc_void], [tc2]),
-                                              true, RET[sv]),
-                                        FU_UNWRAP(tc_pair, [VAR m], x,
-                                         SELECT(VAR x, 0, y,
-                                         SELECT(VAR x, 1, z,
-                                          APP(VAR xx, [VAR y, VAR z])))))
-                                end,
-                             ident)
-                         end
+            (*         val (argt1, body1, hh1) = *)
+            (*           if wflag then (1* wrapping *1) *)
+            (*             ([(m,lt_void),(m2,lt_void)], *)
+            (*              fn sv => *)
+            (*                let val xx = mkv() and yy = mkv() *)
+            (*                 in RECORD(FU_rk_tuple, [VAR m, VAR m2], xx, *)
+            (*                      FU_WRAP(tc_pair, [VAR xx], yy, *)
+            (*                        APP(sv, [VAR yy]))) *)
+            (*                end, *)
+            (*              fn le => *)
+            (*                WRAPcast(mkarw([tc_void,tc_void],[tc2]), *)
+            (*                         true, le)) *)
+            (*           else (1* unwrapping *1) *)
+            (*             let val x = mkv() and y = mkv() and z = mkv() *)
+            (*              in ([(m, lt_void)], *)
+            (*                  fn sv => *)
+            (*                    let val xx = mkv() *)
+            (*                     in LET([xx], *)
+            (*                          UNWRAPcast( *)
+            (*                             mkarw([tc_void, tc_void], [tc2]), *)
+            (*                                  true, RET[sv]), *)
+            (*                            FU_UNWRAP(tc_pair, [VAR m], x, *)
+            (*                             SELECT(VAR x, 0, y, *)
+            (*                             SELECT(VAR x, 1, z, *)
+            (*                              APP(VAR xx, [VAR y, VAR z]))))) *)
+            (*                    end, *)
+            (*                 ident) *)
+            (*             end *)
 
-                     val (argt2, body2, hh2) =
-                       if wflag then  (* wrapping *)
-                         ([(n,lt_breal),(n2,lt_breal)],
-                          fn sv =>
-                            let val xx = mkv() and yy = mkv()
-                             in LET ([xx],
-                                   RECORDg [UNWRAP(tc_real, VAR n),
-                                            UNWRAP(tc_real, VAR n2)],
-                                FU_WRAP(tc_fpair, [VAR xx], yy,
-                                   APP(sv, [VAR yy])))
-                            end,
-                          fn le => WRAPcast(mkarw([tc_breal,tc_breal],[tc2]),
-                                            true, le))
-                       else  (* unwrapping *)
-                         let val x = mkv() and y = mkv() and z = mkv()
-                             val q0 = mkv() and q1 = mkv()
-                          in ([(n, lt_void)],
-                              fn sv =>
-                                let val xx = mkv()
-                                 in LET([xx],
-                                      UNWRAPcast(
-                                         mkarw([tc_breal, tc_breal], [tc2]),
-                                            true, RET[sv]),
-                                      FU_UNWRAP(tc_fpair, [VAR n], x,
-                                        SELECT(VAR x, 0, y,
-                                          FU_WRAP(tc_real, [VAR y], q0,
-                                        SELECT(VAR x, 1, z,
-                                          FU_WRAP(tc_real, [VAR z], q1,
-                                         APP(VAR xx, [VAR q0, VAR q1])))))))
-                                end,
-                            ident)
-                         end
+            (*         val (argt2, body2, hh2) = *)
+            (*           if wflag then  (1* wrapping *1) *)
+            (*             ([(n,lt_breal),(n2,lt_breal)], *)
+            (*              fn sv => *)
+            (*                let val xx = mkv() and yy = mkv() *)
+            (*                 in LET ([xx], *)
+            (*                       RECORDg [UNWRAP(tc_real, VAR n), *)
+            (*                                UNWRAP(tc_real, VAR n2)], *)
+            (*                    FU_WRAP(tc_fpair, [VAR xx], yy, *)
+            (*                       APP(sv, [VAR yy]))) *)
+            (*                end, *)
+            (*              fn le => WRAPcast(mkarw([tc_breal,tc_breal],[tc2]), *)
+            (*                                true, le)) *)
+            (*           else  (1* unwrapping *1) *)
+            (*             let val x = mkv() and y = mkv() and z = mkv() *)
+            (*                 val q0 = mkv() and q1 = mkv() *)
+            (*              in ([(n, lt_void)], *)
+            (*                  fn sv => *)
+            (*                    let val xx = mkv() *)
+            (*                     in LET([xx], *)
+            (*                          UNWRAPcast( *)
+            (*                             mkarw([tc_breal, tc_breal], [tc2]), *)
+            (*                                true, RET[sv]), *)
+            (*                          FU_UNWRAP(tc_fpair, [VAR n], x, *)
+            (*                            SELECT(VAR x, 0, y, *)
+            (*                              FU_WRAP(tc_real, [VAR y], q0, *)
+            (*                            SELECT(VAR x, 1, z, *)
+            (*                              FU_WRAP(tc_real, [VAR z], q1, *)
+            (*                             APP(VAR xx, [VAR q0, VAR q1]))))))) *)
+            (*                    end, *)
+            (*                ident) *)
+            (*             end *)
 
-                     val hh3 = if wflag then fn le => WRAPcast(nt, true, le)
-                               else fn le => UNWRAPcast(nt, true, le)
+            (*         val hh3 = if wflag then fn le => WRAPcast(nt, true, le) *)
+            (*                   else fn le => UNWRAPcast(nt, true, le) *)
 
-                     (*** NEEDS MORE WORK TO DO THE RIGHT COERCIONS ***)
-                     fun hdr0(sv) =
-                       LET([w], e,
-                         COND(test1, hh1(FNg(argt1, body1 sv)),
-                           COND(test2, hh2(FNg(argt2, body2 sv)),
-                                hh3(RET[sv]))))
+            (*         (1*** NEEDS MORE WORK TO DO THE RIGHT COERCIONS ***1) *)
+            (*         fun hdr0(sv) = *)
+            (*           LET([w], e, *)
+            (*             COND(test1, hh1(FNg(argt1, body1 sv)), *)
+            (*               COND(test2, hh2(FNg(argt2, body2 sv)), *)
+            (*                    hh3(RET[sv])))) *)
 
-                     fun hdr (xe as RET [sv]) = hdr0 sv
-                       | hdr xe = let val z = mkv()
-                                   in LET([z], xe, hdr0(VAR z))
-                                  end
-                  in SOME hdr
-                 end)
+            (*         fun hdr (xe as RET [sv]) = hdr0 sv *)
+            (*           | hdr xe = let val z = mkv() *)
+            (*                       in LET([z], xe, hdr0(VAR z)) *)
+            (*                      end *)
+            (*      in SOME hdr *)
+            (*     end) *)
         end
      | _ => NONE)
 

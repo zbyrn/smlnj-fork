@@ -86,6 +86,8 @@ struct
 	      "fcontract",       (* 7 *)
 	      "wrap",            (* 8 *)
 	      "fcontract",       (* 9 *)
+	      (* "wrapunwrap",      (1* 9.5 *1) *)
+	      (* "fcontract",       (1* 9.75 *1) *)
 	      "reify",           (* 10 *)
 	      "fcontract",       (* 11 *)
 	      "fixfix",          (* 12 *)
